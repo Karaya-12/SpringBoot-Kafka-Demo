@@ -1,0 +1,38 @@
+# Custom Server Port: 8081
+server:
+  port: 8081
+
+# Spring Boot Configuration
+spring:
+  application:
+    name: KafkaDemo
+
+  # Set Kafka Server(s) Location(s) & Create a Topic & Publish to It
+  kafka:
+    listener:
+      missing-topics-fatal: false
+
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 0
+      batch-size: 16384  # 16kB
+      buffer-memory: 33554432
+      properties:
+        linger.ms: 1
+
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: KafkaDemo
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-commit-interval: 100ms
+      properties:
+        session.timeout.ms: 15000
+
+# Log4j Configuration Path
+logging:
+  config: classpath:log4j2-spring.xml
